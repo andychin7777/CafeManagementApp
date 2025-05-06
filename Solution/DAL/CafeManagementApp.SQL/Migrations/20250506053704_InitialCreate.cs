@@ -15,7 +15,7 @@ namespace CafeManagementApp.SQL.Migrations
                 name: "Cafes",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CafeGuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     Logo = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -23,14 +23,15 @@ namespace CafeManagementApp.SQL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Cafes", x => x.Id);
+                    table.PrimaryKey("PK_Cafes", x => x.CafeGuid);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Employees",
                 columns: table => new
                 {
-                    EmployeeId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    EmployeeId = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     EmployeeIdString = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -49,7 +50,7 @@ namespace CafeManagementApp.SQL.Migrations
                     CafeEmployeeId = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CafeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    EmployeeId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    EmployeeId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -58,7 +59,7 @@ namespace CafeManagementApp.SQL.Migrations
                         name: "FK_CafeEmployees_Cafes_CafeId",
                         column: x => x.CafeId,
                         principalTable: "Cafes",
-                        principalColumn: "Id");
+                        principalColumn: "CafeGuid");
                     table.ForeignKey(
                         name: "FK_CafeEmployees_Employees_EmployeeId",
                         column: x => x.EmployeeId,

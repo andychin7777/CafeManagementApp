@@ -1,26 +1,23 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CafeManagementApp.SQL.Model
+namespace CafeManagementApp.BLL.Model
 {
-    public class CafeEmployee
+    public class CafeEmployeeBll
     {
-        [Key]
         public long CafeEmployeeId { get; set; }
 
         [Required]
-        [ForeignKey(nameof(Model.Cafe))]
         public Guid CafeId { get; set; }
 
         [Required]
-        [ForeignKey(nameof(Model.Employee))]
         public long EmployeeId { get; set; }
 
         public DateOnly? StartDate { get; set; }
 
-        // Navigation properties
-        public Cafe Cafe { get; set; }
 
-        public Employee Employee { get; set; }
+        // Navigation properties
+        public CafeBll Cafe { get; set; }
+
+        public EmployeeBll Employee { get; set; }
     }
 }

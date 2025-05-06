@@ -1,15 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CafeManagementApp.SQL.Model
+namespace CafeManagementApp.BLL.Model
 {
-    public class Cafe
+    public class CafeBll
     {
         /// <summary>
         ///  // UUID for the cafe
         /// </summary>
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)] // Ensures the database generates the GUID
         public Guid CafeGuid { get; set; }
 
         [Required]
@@ -29,6 +26,6 @@ namespace CafeManagementApp.SQL.Model
         [StringLength(200, ErrorMessage = "Location cannot exceed 200 characters.")]
         public string Location { get; set; }
 
-        public virtual IList<CafeEmployee> CafeEmployees { get; set; } = new List<CafeEmployee>();
+        public virtual IList<CafeEmployeeBll> CafeEmployees { get; set; } = new List<CafeEmployeeBll>();
     }
 }

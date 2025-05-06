@@ -36,11 +36,6 @@ namespace CafeManagementApp.SQL.DBContext
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Configure unique constraint for CafeId and EmployeeId in CafeEmployee
-            modelBuilder.Entity<CafeEmployee>()
-                .HasIndex(ce => new { ce.CafeId, ce.EmployeeId })
-                .IsUnique();
-
             // Disable cascading deletes globally
             foreach (var relationship in modelBuilder.Model.GetEntityTypes()
                 .SelectMany(e => e.GetForeignKeys()))

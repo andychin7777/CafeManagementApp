@@ -1,14 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CafeManagementApp.SQL.Model
+namespace CafeManagementApp.BLL.Model
 {
-    public class Employee
+    public class EmployeeBll
     {
         [Key]
         public long EmployeeId { get; set; }
-                
+
         [Required]
-        [RegularExpression(@"^UI[A-Za-z0-9]{7}$", 
+        [RegularExpression(@"^UI[A-Za-z0-9]{7}$",
             ErrorMessage = "ID must be in the format 'UIXXXXXXX' where X is alphanumeric.")]
         public string EmployeeIdString { get; set; }
 
@@ -28,6 +28,6 @@ namespace CafeManagementApp.SQL.Model
         [RegularExpression(@"^(Male|Female)$", ErrorMessage = "Gender must be either 'Male' or 'Female'.")]
         public string Gender { get; set; }
 
-        public virtual IList<CafeEmployee> CafeEmployees { get; set; } = new List<CafeEmployee>();
+        public virtual IList<CafeEmployeeBll> CafeEmployees { get; set; } = new List<CafeEmployeeBll>();
     }
 }

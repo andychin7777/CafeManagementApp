@@ -13,6 +13,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BLL", "BLL", "{78DC5D3E-2CD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CafeManagementApp.SQL", "DAL\CafeManagementApp.SQL\CafeManagementApp.SQL.csproj", "{81D6FF06-A02A-4F2F-BF97-AD55627DBAA1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CafeManagementApp.DAL", "DAL\CafeManagementApp.DAL\CafeManagementApp.DAL.csproj", "{D8BDD848-F80E-4393-834E-E7134DBBA28E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CafeManagementApp.BLL", "BLL\CafeManagementApp.BLL\CafeManagementApp.BLL.csproj", "{5BE84DC6-AC1A-4F02-BD9A-E11B8142BBEC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bootstrap", "Bootstrap", "{37441ADC-ED29-4000-96D4-AD8529782159}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{EF922DDE-92DF-40DC-AA8E-F42E60DA9CCB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CafeManagementApp.Shared", "Shared\CafeManagementApp.Shared\CafeManagementApp.Shared.csproj", "{5E3F49A6-AC12-444C-8540-8CCA6C8CF797}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,12 +43,27 @@ Global
 		{81D6FF06-A02A-4F2F-BF97-AD55627DBAA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81D6FF06-A02A-4F2F-BF97-AD55627DBAA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81D6FF06-A02A-4F2F-BF97-AD55627DBAA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8BDD848-F80E-4393-834E-E7134DBBA28E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8BDD848-F80E-4393-834E-E7134DBBA28E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8BDD848-F80E-4393-834E-E7134DBBA28E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8BDD848-F80E-4393-834E-E7134DBBA28E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BE84DC6-AC1A-4F02-BD9A-E11B8142BBEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BE84DC6-AC1A-4F02-BD9A-E11B8142BBEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BE84DC6-AC1A-4F02-BD9A-E11B8142BBEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BE84DC6-AC1A-4F02-BD9A-E11B8142BBEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E3F49A6-AC12-444C-8540-8CCA6C8CF797}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E3F49A6-AC12-444C-8540-8CCA6C8CF797}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E3F49A6-AC12-444C-8540-8CCA6C8CF797}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E3F49A6-AC12-444C-8540-8CCA6C8CF797}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{81D6FF06-A02A-4F2F-BF97-AD55627DBAA1} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{D8BDD848-F80E-4393-834E-E7134DBBA28E} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{5BE84DC6-AC1A-4F02-BD9A-E11B8142BBEC} = {78DC5D3E-2CD3-417B-B13A-C8E59DACEFEE}
+		{5E3F49A6-AC12-444C-8540-8CCA6C8CF797} = {EF922DDE-92DF-40DC-AA8E-F42E60DA9CCB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {885E027E-3802-41B0-A053-C5CE74440EA4}

@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DomainResult.Common" Version="3.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\DAL\CafeManagementApp.DAL\CafeManagementApp.DAL.csproj" />
+    <ProjectReference Include="..\..\DAL\CafeManagementApp.SQL\CafeManagementApp.SQL.csproj" />
+  </ItemGroup>
+
+</Project>

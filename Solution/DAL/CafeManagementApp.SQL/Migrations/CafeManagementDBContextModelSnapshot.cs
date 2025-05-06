@@ -24,7 +24,7 @@ namespace CafeManagementApp.SQL.Migrations
 
             modelBuilder.Entity("CafeManagementApp.SQL.Model.Cafe", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("CafeGuid")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -46,7 +46,7 @@ namespace CafeManagementApp.SQL.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.HasKey("Id");
+                    b.HasKey("CafeGuid");
 
                     b.ToTable("Cafes");
                 });
@@ -62,9 +62,8 @@ namespace CafeManagementApp.SQL.Migrations
                     b.Property<Guid>("CafeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("EmployeeId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<long>("EmployeeId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("CafeEmployeeId");
 
@@ -78,8 +77,11 @@ namespace CafeManagementApp.SQL.Migrations
 
             modelBuilder.Entity("CafeManagementApp.SQL.Model.Employee", b =>
                 {
-                    b.Property<string>("EmployeeId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<long>("EmployeeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("EmployeeId"));
 
                     b.Property<string>("EmailAddress")
                         .IsRequired()
