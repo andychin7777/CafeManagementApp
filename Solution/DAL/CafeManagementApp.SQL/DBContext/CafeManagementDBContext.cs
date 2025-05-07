@@ -36,6 +36,10 @@ namespace CafeManagementApp.SQL.DBContext
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Cafe>()
+                .Property(x => x.CafeGuid)
+                .HasDefaultValueSql("NEWID()");
+
             // Disable cascading deletes globally
             foreach (var relationship in modelBuilder.Model.GetEntityTypes()
                 .SelectMany(e => e.GetForeignKeys()))

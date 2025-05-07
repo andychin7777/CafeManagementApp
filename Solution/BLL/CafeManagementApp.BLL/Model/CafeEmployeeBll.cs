@@ -7,7 +7,7 @@ namespace CafeManagementApp.BLL.Model
         public long CafeEmployeeId { get; set; }
 
         [Required]
-        public Guid CafeId { get; set; }
+        public Guid CafeGuid { get; set; }
 
         [Required]
         public long EmployeeId { get; set; }

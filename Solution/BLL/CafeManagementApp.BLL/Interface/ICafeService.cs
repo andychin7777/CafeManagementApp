@@ -7,7 +7,7 @@ namespace CafeManagementApp.BLL.Interface
     {
         // Cafe CRUD
         Task<IDomainResult<CafeBll?>> UpsertCafe(CafeBll cafe);
-        Task<IDomainResult<List<CafeBll>>> GetAllCafes();
+        Task<IDomainResult<List<CafeBll>>> GetAllCafes(string location);
         Task<IDomainResult<CafeBll?>> GetCafeByGuid(Guid cafeGuid);
         Task<IDomainResult> DeleteCafe(Guid cafeGuid);
     }

@@ -10,7 +10,7 @@ namespace CafeManagementApp.SQL.Model
 
         [Required]
         [ForeignKey(nameof(Model.Cafe))]
-        public Guid CafeId { get; set; }
+        public Guid CafeGuid { get; set; }
 
         [Required]
         [ForeignKey(nameof(Model.Employee))]

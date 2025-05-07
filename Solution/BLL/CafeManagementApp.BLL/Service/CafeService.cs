@@ -2,6 +2,7 @@
 using CafeManagementApp.BLL.Mapping;
 using CafeManagementApp.BLL.Model;
 using CafeManagementApp.DAL.Interface;
+using CafeManagementApp.DAL.Model;
 using DomainResults.Common;
 
 namespace CafeManagementApp.BLL.Service
@@ -18,7 +19,14 @@ namespace CafeManagementApp.BLL.Service
         public async Task<IDomainResult> DeleteCafe(Guid cafeGuid)
         {
             //delete all employees in the cafe
-            var getCafeEmployees = await _unitOfWork.CafeRepository.GetById(cafeGuid, includes: x => x.CafeEmployees);
+            var includeModel = new[]
+            {
+                new IncludesExpressionChain<SQL.Model.Cafe>()
+                {
+                    Include = x => x.CafeEmployees
+                }
+            };
+            var getCafeEmployees = await _unitOfWork.CafeRepository.GetById(cafeGuid, includes: includeModel);
 
             //delete link table
             await _unitOfWork.CafeEmployeeRepository.DeleteRange(getCafeEmployees.CafeEmployees
@@ -33,24 +41,46 @@ namespace CafeManagementApp.BLL.Service
             return DomainResult.Success();
         }
 
-        public async Task<IDomainResult<List<CafeBll>>> GetAllCafes()
+        public async Task<IDomainResult<List<CafeBll>>> GetAllCafes(string location)
         {
-            var cafeBlls = await _unitOfWork.CafeRepository.All(includes: x => x.CafeEmployees.Select(y => y.Employee));
-            
-            return DomainResult.Success(cafeBlls.Select(x => x.MapToBll()).ToList());
+            var includeModel = new []
+            {   
+                new IncludesExpressionChain<SQL.Model.Cafe>()
+                {
+                    Include = x => x.CafeEmployees,
+                    ThenIncludes = [x => (x as SQL.Model.CafeEmployee).Employee]
+                }
+            };
+
+            var cafes = 
+                !string.IsNullOrEmpty(location) 
+                ? await _unitOfWork.CafeRepository.Find(x => x.Location == location, 
+                                includes: includeModel)
+                : await _unitOfWork.CafeRepository.All(includes: includeModel);                        
+
+            return DomainResult.Success(cafes.Select(x => x.MapToBll(mapCafeEmployees: true)).ToList());
         }
 
         public async Task<IDomainResult<CafeBll?>> GetCafeByGuid(Guid cafeGuid)
         {
-            var cafeBll = await _unitOfWork.CafeRepository.GetById(cafeGuid, 
-                includes: x => x.CafeEmployees.Select(y => y.Employee));
+            var includeModel = new[]
+            {
+                new IncludesExpressionChain<SQL.Model.Cafe>()
+                {
+                    Include = x => x.CafeEmployees,
+                    ThenIncludes = [x => (x as SQL.Model.CafeEmployee).Employee]
+                }
+            };
 
-            if (cafeBll == null)
+            var cafes = await _unitOfWork.CafeRepository.GetById(cafeGuid, 
+                includes: includeModel);
+
+            if (cafes == null)
             {
                 return DomainResult.NotFound<CafeBll?>();
             }
 
-            return DomainResult.Success(cafeBll.MapToBll());
+            return DomainResult.Success(cafes.MapToBll(mapCafeEmployees: true));
         }
 
         public async Task<IDomainResult<CafeBll?>> UpsertCafe(CafeBll cafe)

@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BLL\CafeManagementApp.BLL\CafeManagementApp.BLL.csproj" />
     <ProjectReference Include="..\BootStrap\Bootstrap\Bootstrap.csproj" />
     <ProjectReference Include="..\cafemanagementapp.client\cafemanagementapp.client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>

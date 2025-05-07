@@ -5,11 +5,19 @@ namespace CafeManagementApp.BLL.Mapping
 {
     internal static class EmployeeMapping
     {
-        internal static Employee? MapToSql(this EmployeeBll employeeBll, bool mapCafeEmployees = false)
+        internal static Employee? MapToSql(this EmployeeBll employeeBll, bool mapCafeEmployees = false,
+            Dictionary<string, object>? cache = null)
         {
             if (employeeBll == null)
             {
                 return null;
+            }
+
+            var key = $"{nameof(EmployeeBll)}_{employeeBll.EmployeeId}";
+            cache ??= new Dictionary<string, object>();
+            if (cache.TryGetValue(key, out var existingEntity))
+            {
+                return (Employee)existingEntity;
             }
 
             var returnValue = new Employee
@@ -21,18 +29,29 @@ namespace CafeManagementApp.BLL.Mapping
                 PhoneNumber = employeeBll.PhoneNumber,
                 Gender = employeeBll.Gender                
             };
+
+            cache.Add(key, returnValue);
+
             if (mapCafeEmployees)
             {
-                returnValue.CafeEmployees = employeeBll.CafeEmployees.Select(x => x.MapToSql(mapCafe: true)).ToList();
+                returnValue.CafeEmployees = employeeBll.CafeEmployees.Select(x => x.MapToSql(mapCafe: true, cache: cache)).ToList();
             }
             return returnValue;
         }
 
-        internal static EmployeeBll? MapToBll(this Employee employee, bool mapCafeEmployees = false)
+        internal static EmployeeBll? MapToBll(this Employee employee, bool mapCafeEmployees = false,
+            Dictionary<string, object>? cache = null)
         {
             if (employee == null)
             {
                 return null;
+            }
+
+            var key = $"{nameof(Employee)}_{employee.EmployeeId}";
+            cache ??= new Dictionary<string, object>();
+            if (cache.TryGetValue(key, out var existingEntity))
+            {
+                return (EmployeeBll)existingEntity;
             }
 
             var returnValue = new EmployeeBll
@@ -45,9 +64,11 @@ namespace CafeManagementApp.BLL.Mapping
                 Gender = employee.Gender                
             };
 
+            cache.Add(key, returnValue);
+
             if (mapCafeEmployees)
             {
-                returnValue.CafeEmployees = employee.CafeEmployees.Select(x => x.MapToBll(mapCafe: true)).ToList();
+                returnValue.CafeEmployees = employee.CafeEmployees.Select(x => x.MapToBll(mapCafe: true, cache: cache)).ToList();
             }
 
             return returnValue;

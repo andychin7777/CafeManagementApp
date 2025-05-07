@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using CafeManagementApp.DAL.Shared.Interface;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Linq;
+using CafeManagementApp.DAL.Model;
+using Microsoft.EntityFrameworkCore.Query;
+using System.Runtime.Serialization;
 
 namespace CafeManagementApp.DAL.Shared.Service
 {
@@ -27,27 +30,19 @@ namespace CafeManagementApp.DAL.Shared.Service
         }
 
         public virtual async Task<IEnumerable<T>> All(bool withTracking = false,
-            params Expression<Func<T, object>>[] includes)
+            IncludesExpressionChain<T>[] includes = null)
         {
             var query = _dbSet.AsQueryable();
-
-            foreach (var include in includes)
-            {
-                query = query.Include(include);
-            }
+            query = SetIncludes(query, includes);
 
             return withTracking ? await query.ToListAsync() : await query.AsNoTracking().ToListAsync();
         }
 
-        public virtual async Task<T?> GetById(T2 id, bool withTracking = false, 
-            params Expression<Func<T, object>>[] includes)
+        public virtual async Task<T?> GetById(T2 id, bool withTracking = false,
+            IncludesExpressionChain<T>[] includes = null)
         {
             var query = _dbSet.AsQueryable();
-
-            foreach (var include in includes)
-            {
-                query = query.Include(include);
-            }
+            query = SetIncludes(query, includes);
 
             var propertyName = GetPropertyName();
             //below requires EFproperty to compile the code correctly when EF core converts it to SQL
@@ -102,14 +97,10 @@ namespace CafeManagementApp.DAL.Shared.Service
 
         public virtual async Task<IEnumerable<T?>> Find(Expression<Func<T, bool>> predicate,
             bool withTracking = false,
-            params Expression<Func<T, object>>[] includes)
+            IncludesExpressionChain<T>[] includes = null)
         {
             var query = _dbSet.AsQueryable();
-
-            foreach (var include in includes)
-            {
-                query = query.Include(include);
-            }
+            query = SetIncludes(query, includes);
 
             return withTracking
                 ? await query.Where(predicate).ToListAsync()
@@ -157,6 +148,24 @@ namespace CafeManagementApp.DAL.Shared.Service
             }
 
             return propertyName;
+        }
+
+        private IQueryable<T> SetIncludes(IQueryable<T> query, IncludesExpressionChain<T>[] includes)
+        {
+            foreach (var include in includes ?? [])
+            {
+                if (include.Include != null)
+                {
+                    query = query.Include(include.Include);
+
+                    foreach (var thenInclude in include.ThenIncludes)
+                    {
+                        query = ((IIncludableQueryable<T, object>)query)
+                            .ThenInclude(thenInclude);
+                    }
+                }
+            }
+            return query;
         }
     }
 }

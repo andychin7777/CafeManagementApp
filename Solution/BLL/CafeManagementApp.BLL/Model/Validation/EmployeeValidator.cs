@@ -18,7 +18,7 @@ namespace CafeManagementApp.BLL.Model.Validation
         {
             // Sort the cafeEmployees by CafeId, then by StartDate
             var sortedCafeEmployees = cafeEmployees
-                .OrderBy(x => x.CafeId)
+                .OrderBy(x => x.CafeGuid)
                 .ThenBy(x => x.StartDate)
                 .ToList();
 
@@ -38,9 +38,9 @@ namespace CafeManagementApp.BLL.Model.Validation
                 {
                     // Add overlap details to the list
                     overlapMessages.Add(
-                        $"Overlap detected: CafeId {current.CafeId} with range " +
+                        $"Overlap detected: CafeId {current.CafeGuid} with range " +
                         $"{current.StartDate} - {current.EndDate} " +
-                        $"overlaps with CafeId {next.CafeId} {next.StartDate} - {next.EndDate}.");
+                        $"overlaps with CafeId {next.CafeGuid} {next.StartDate} - {next.EndDate}.");
                 }
             }
 

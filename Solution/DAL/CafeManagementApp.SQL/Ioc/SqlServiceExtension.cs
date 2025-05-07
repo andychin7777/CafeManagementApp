@@ -11,7 +11,7 @@ namespace CafeManagementApp.SQL.Ioc
         {
             services.AddDbContext<CafeManagementDBContext>(options =>
             {
-                options.UseSqlServer(configuration.GetConnectionString("HrManagementSystemDBContext"));
+                options.UseSqlServer(configuration.GetConnectionString("CafeManagementAppDBContext"));
             });
             return services;
         }

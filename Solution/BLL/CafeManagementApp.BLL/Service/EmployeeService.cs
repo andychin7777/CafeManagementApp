@@ -3,6 +3,7 @@ using CafeManagementApp.BLL.Mapping;
 using CafeManagementApp.BLL.Model;
 using CafeManagementApp.BLL.Model.Validation;
 using CafeManagementApp.DAL.Interface;
+using CafeManagementApp.DAL.Model;
 using DomainResults.Common;
 
 namespace CafeManagementApp.BLL.Service
@@ -25,14 +26,31 @@ namespace CafeManagementApp.BLL.Service
 
         public async Task<IDomainResult<List<EmployeeBll>>> GetAllEmployees()
         {
-            var employees = await _unitOfWork.EmployeeRepository.All(includes: x => x.CafeEmployees.Select(y => y.Cafe));
+            var includeModel = new[]
+            {
+                new IncludesExpressionChain<SQL.Model.Employee>()
+                {
+                    Include = x => x.CafeEmployees,
+                    ThenIncludes = [x => (x as SQL.Model.CafeEmployee).Cafe]
+                }
+            };
+
+            var employees = await _unitOfWork.EmployeeRepository.All(includes: includeModel);
             return DomainResult.Success(employees.Select(x => x.MapToBll()).ToList());
         }
 
         public async Task<IDomainResult<EmployeeBll?>> GetEmployeeByEmployeeId(long employeeId)
         {
+            var includeModel = new[]
+            {
+                new IncludesExpressionChain<SQL.Model.Employee>()
+                {
+                    Include = x => x.CafeEmployees,
+                    ThenIncludes = [x => (x as SQL.Model.CafeEmployee).Cafe]
+                }
+            };
             var employee = await _unitOfWork.EmployeeRepository
-                .GetById(employeeId, includes: x => x.CafeEmployees.Select(y => y.Cafe));
+                .GetById(employeeId, includes: includeModel);
 
             if (employee == null)
             {
@@ -62,16 +80,24 @@ namespace CafeManagementApp.BLL.Service
                     existingEntity.Gender = newEntity.Gender;
                 });
 
+            var includeModel = new[]
+            {
+                new IncludesExpressionChain<SQL.Model.Employee>()
+                {
+                    Include = x => x.CafeEmployees,
+                }
+            };
+
             if (!isAdd)
             {
                 //update the related cafe employees
                 var existingEmployee = await _unitOfWork.EmployeeRepository
-                    .GetById(updateSqlEmployee.EmployeeId, includes: x => x.CafeEmployees);
+                    .GetById(updateSqlEmployee.EmployeeId, includes: includeModel);
 
                 await UpdateRelatedEntities(
                     existingEmployee.CafeEmployees,
                     updateSqlEmployee.CafeEmployees,
-                    (x, y) => x.CafeId == y.CafeId && x.StartDate == y.StartDate,
+                    (x, y) => x.CafeGuid == y.CafeGuid && x.StartDate == y.StartDate,
                     async entityToAdd => await _unitOfWork.CafeEmployeeRepository
                         .AddRange(entityToAdd),
                     async entityToDelete => await _unitOfWork.CafeEmployeeRepository
