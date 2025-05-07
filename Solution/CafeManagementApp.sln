@@ -23,6 +23,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{EF922D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CafeManagementApp.Shared", "Shared\CafeManagementApp.Shared\CafeManagementApp.Shared.csproj", "{5E3F49A6-AC12-444C-8540-8CCA6C8CF797}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bootstrap", "BootStrap\Bootstrap\Bootstrap.csproj", "{FEC8EBAA-40BE-46C9-A909-ACB63FC882C8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{5E3F49A6-AC12-444C-8540-8CCA6C8CF797}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E3F49A6-AC12-444C-8540-8CCA6C8CF797}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E3F49A6-AC12-444C-8540-8CCA6C8CF797}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEC8EBAA-40BE-46C9-A909-ACB63FC882C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEC8EBAA-40BE-46C9-A909-ACB63FC882C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEC8EBAA-40BE-46C9-A909-ACB63FC882C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEC8EBAA-40BE-46C9-A909-ACB63FC882C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +70,7 @@ Global
 		{D8BDD848-F80E-4393-834E-E7134DBBA28E} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{5BE84DC6-AC1A-4F02-BD9A-E11B8142BBEC} = {78DC5D3E-2CD3-417B-B13A-C8E59DACEFEE}
 		{5E3F49A6-AC12-444C-8540-8CCA6C8CF797} = {EF922DDE-92DF-40DC-AA8E-F42E60DA9CCB}
+		{FEC8EBAA-40BE-46C9-A909-ACB63FC882C8} = {37441ADC-ED29-4000-96D4-AD8529782159}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {885E027E-3802-41B0-A053-C5CE74440EA4}

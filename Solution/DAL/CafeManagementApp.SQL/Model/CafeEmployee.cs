@@ -18,6 +18,8 @@ namespace CafeManagementApp.SQL.Model
 
         public DateOnly? StartDate { get; set; }
 
+        public DateOnly? EndDate { get; set; }
+
         // Navigation properties
         public Cafe Cafe { get; set; }
 

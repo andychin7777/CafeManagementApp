@@ -7,11 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DomainResult.Common" Version="3.3.1" />
-    <PackageReference Include="FluentValidation" Version="12.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.4" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.4" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.4" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\BLL\CafeManagementApp.BLL\CafeManagementApp.BLL.csproj" />
     <ProjectReference Include="..\..\DAL\CafeManagementApp.DAL\CafeManagementApp.DAL.csproj" />
     <ProjectReference Include="..\..\DAL\CafeManagementApp.SQL\CafeManagementApp.SQL.csproj" />
   </ItemGroup>

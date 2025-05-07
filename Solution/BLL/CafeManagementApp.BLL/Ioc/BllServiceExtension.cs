@@ -6,7 +6,7 @@ namespace CafeManagementApp.BLL.Ioc
 {
     public static class BllServiceExtension
     {
-        public static IServiceCollection AddDal(this IServiceCollection services)
+        public static IServiceCollection AddBll(this IServiceCollection services)
         {
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<ICafeService, CafeService>();

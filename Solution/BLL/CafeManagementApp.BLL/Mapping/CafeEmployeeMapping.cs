@@ -19,7 +19,8 @@ namespace CafeManagementApp.BLL.Mapping
                 CafeEmployeeId = cafeEmployeeBll.CafeEmployeeId,
                 CafeId = cafeEmployeeBll.CafeId,
                 EmployeeId = cafeEmployeeBll.EmployeeId,
-                StartDate = cafeEmployeeBll.StartDate
+                StartDate = cafeEmployeeBll.StartDate,
+                EndDate = cafeEmployeeBll.EndDate
             };
 
             if (mapEmployee)
@@ -47,7 +48,8 @@ namespace CafeManagementApp.BLL.Mapping
                 CafeEmployeeId = cafeEmployee.CafeEmployeeId,
                 CafeId = cafeEmployee.CafeId,
                 EmployeeId = cafeEmployee.EmployeeId,
-                StartDate = cafeEmployee.StartDate
+                StartDate = cafeEmployee.StartDate,
+                EndDate = cafeEmployee.EndDate
             };
 
             if (mapEmployee)

@@ -14,6 +14,8 @@ namespace CafeManagementApp.BLL.Model
 
         public DateOnly? StartDate { get; set; }
 
+        public DateOnly? EndDate { get; set; }
+
 
         // Navigation properties
         public CafeBll Cafe { get; set; }

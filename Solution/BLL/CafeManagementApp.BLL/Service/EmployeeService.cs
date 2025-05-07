@@ -1,6 +1,7 @@
 ﻿using CafeManagementApp.BLL.Interface;
 using CafeManagementApp.BLL.Mapping;
 using CafeManagementApp.BLL.Model;
+using CafeManagementApp.BLL.Model.Validation;
 using CafeManagementApp.DAL.Interface;
 using DomainResults.Common;
 
@@ -42,6 +43,14 @@ namespace CafeManagementApp.BLL.Service
 
         public async Task<IDomainResult<EmployeeBll?>> UpsertEmployee(EmployeeBll employee)
         {
+            //validate employee first
+            var validator = new EmployeeValidator();
+            var validationResult = await validator.ValidateAsync(employee);
+            if (!validationResult.IsValid)
+            {
+                return DomainResult.Failed<EmployeeBll?>(validationResult.Errors.Select(x => x.ErrorMessage));
+            }
+
             var updateSqlEmployee = employee.MapToSql();
             var isAdd = updateSqlEmployee.EmployeeId == 0;
             await _unitOfWork.EmployeeRepository.Upsert(updateSqlEmployee,
