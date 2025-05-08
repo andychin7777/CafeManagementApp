@@ -7,7 +7,7 @@ namespace CafeManagementApp.BLL.Interface
     {
         // Employee CRUD
         Task<IDomainResult<EmployeeBll?>> UpsertEmployee(EmployeeBll employee);
-        Task<IDomainResult<List<EmployeeBll>>> GetAllEmployees();
+        Task<IDomainResult<List<EmployeeBll>>> GetAllEmployees(string cafe);
         Task<IDomainResult<EmployeeBll?>> GetEmployeeByEmployeeId(long employeeId);
         Task<IDomainResult> DeleteEmployee(long employeeId);
     }

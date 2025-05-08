@@ -25,6 +25,6 @@ namespace CafeManagementApp.Server.Mapping
             };
 
             return returnValue;
-        }        
+        }
     }
 }

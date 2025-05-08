@@ -16,10 +16,12 @@ namespace CafeManagementApp.Server.Controllers
     public class CafeController : ControllerBase
     {
         private readonly ICafeService _cafeService;
+        private readonly IEmployeeService _employeeService;
 
-        public CafeController(ICafeService cafeService)
+        public CafeController(ICafeService cafeService, IEmployeeService employeeService)
         {
             _cafeService = cafeService;
+            _employeeService = employeeService;
         }
 
         /// <summary>
@@ -35,6 +37,22 @@ namespace CafeManagementApp.Server.Controllers
             var result = await _cafeService.GetAllCafes(location);
             return result.ToCustomReturnedActionResult(x => 
                 x.Select(x => x.MapToViewModel()).OrderByDescending(x => x.Employees).ToList(), 
+                this);
+        }
+
+        /// <summary>
+        /// Retrieves a list of employees filtered by cafe
+        /// </summary>
+        /// <param name="cafe">The cafe to filter employees by (leave blank to ignore).</param>
+        /// <returns>A list of employees in the specified cafe ordered by highest number of days worked first.</returns>
+        [HttpGet]
+        [Route("~/api/employees")]
+        [ProducesResponseType(typeof(List<GetEmployeeViewModel>), 200)]
+        public async Task<IActionResult> GetEmployeeByCafe([FromQuery] string? cafe)
+        {
+            var result = await _employeeService.GetAllEmployees(cafe);
+            return result.ToCustomReturnedActionResult(x =>
+                x.Select(x => x.MapToViewModel()).OrderByDescending(x => x.DaysWorked).ToList(),
                 this);
         }
     }

@@ -9,15 +9,11 @@ namespace CafeManagementApp.Server.Model
         /// <summary>
         /// Name of the cafe
         /// </summary>
-        [Required]
-        [StringLength(100, ErrorMessage = "Name cannot exceed 100 characters.")]
         public string Name { get; set; }
 
         /// <summary>
         /// A short description of the cafe
         /// </summary>
-        [Required]
-        [StringLength(500, ErrorMessage = "Description cannot exceed 500 characters.")]
         public string Description { get; set; }
 
         /// <summary>
@@ -34,8 +30,6 @@ namespace CafeManagementApp.Server.Model
         /// <summary>
         /// Location of the cafe
         /// </summary>
-        [Required]
-        [StringLength(200, ErrorMessage = "Location cannot exceed 200 characters.")]
         public string Location { get; set; }
     }
 }

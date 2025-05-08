@@ -24,7 +24,7 @@ namespace CafeManagementApp.BLL.Service
             return DomainResult.Success();
         }
 
-        public async Task<IDomainResult<List<EmployeeBll>>> GetAllEmployees()
+        public async Task<IDomainResult<List<EmployeeBll>>> GetAllEmployees(string cafe)
         {
             var includeModel = new[]
             {
@@ -35,8 +35,13 @@ namespace CafeManagementApp.BLL.Service
                 }
             };
 
-            var employees = await _unitOfWork.EmployeeRepository.All(includes: includeModel);
-            return DomainResult.Success(employees.Select(x => x.MapToBll()).ToList());
+            var employees =
+                !string.IsNullOrEmpty(cafe)
+                ? await _unitOfWork.EmployeeRepository.Find(x => x.CafeEmployees.Any(y => y.Cafe.Name == cafe),
+                                includes: includeModel)
+                : await _unitOfWork.EmployeeRepository.All(includes: includeModel);
+
+            return DomainResult.Success(employees.Select(x => x.MapToBll(mapCafeEmployees: true)).ToList());
         }
 
         public async Task<IDomainResult<EmployeeBll?>> GetEmployeeByEmployeeId(long employeeId)

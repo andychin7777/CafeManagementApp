@@ -56,7 +56,7 @@ namespace CafeManagementApp.BLL.Service
                 !string.IsNullOrEmpty(location) 
                 ? await _unitOfWork.CafeRepository.Find(x => x.Location == location, 
                                 includes: includeModel)
-                : await _unitOfWork.CafeRepository.All(includes: includeModel);                        
+                : await _unitOfWork.CafeRepository.All(includes: includeModel);
 
             return DomainResult.Success(cafes.Select(x => x.MapToBll(mapCafeEmployees: true)).ToList());
         }
