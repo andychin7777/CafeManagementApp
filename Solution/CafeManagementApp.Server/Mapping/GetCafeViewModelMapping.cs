@@ -6,7 +6,7 @@ namespace CafeManagementApp.Server.Mapping
 {
     internal static class GetCafeViewModelMapping
     {
-        internal static GetCafeViewModel? MapToViewModel(this CafeBll cafeBll)
+        internal static GetCafeViewModel? MapToGetViewModel(this CafeBll cafeBll)
         {
             if (cafeBll == null)
             {

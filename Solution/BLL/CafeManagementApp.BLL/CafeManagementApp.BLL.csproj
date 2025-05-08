@@ -14,6 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\DAL\CafeManagementApp.DAL\CafeManagementApp.DAL.csproj" />
     <ProjectReference Include="..\..\DAL\CafeManagementApp.SQL\CafeManagementApp.SQL.csproj" />
+    <ProjectReference Include="..\..\Shared\CafeManagementApp.Shared\CafeManagementApp.Shared.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
 ﻿using CafeManagementApp.BLL.Model;
+using CafeManagementApp.Shared;
 using CafeManagementApp.SQL.Model;
 
 namespace CafeManagementApp.BLL.Mapping
@@ -15,14 +16,9 @@ namespace CafeManagementApp.BLL.Mapping
                 return null;
             }
 
-            var key = $"{nameof(CafeEmployeeBll)}_{cafeEmployeeBll.CafeEmployeeId}";
-            cache ??= new Dictionary<string, object>();
-            if (cache.TryGetValue(key, out var existingEntity))
-            {
-                return (CafeEmployee)existingEntity;
-            }
-
-            var returnValue = new CafeEmployee
+            var mappingCacheHelper = new MappingCacheHelper<CafeEmployeeBll, CafeEmployee>(
+                $"{cafeEmployeeBll.CafeEmployeeId}", ref cache);
+            Func<CafeEmployee> mapFunction = () => new CafeEmployee
             {
                 CafeEmployeeId = cafeEmployeeBll.CafeEmployeeId,
                 CafeGuid = cafeEmployeeBll.CafeGuid,
@@ -30,8 +26,10 @@ namespace CafeManagementApp.BLL.Mapping
                 StartDate = cafeEmployeeBll.StartDate,
                 EndDate = cafeEmployeeBll.EndDate
             };
-
-            cache.Add(key, returnValue);
+            if (mappingCacheHelper.TryGetExistingEntityElseMap(mapFunction, out var returnValue))
+            {
+                return returnValue;
+            }
 
             if (mapEmployee)
             {
@@ -54,14 +52,9 @@ namespace CafeManagementApp.BLL.Mapping
                 return null;
             }
 
-            var key = $"{nameof(CafeEmployee)}_{cafeEmployee.CafeEmployeeId}";
-            cache ??= new Dictionary<string, object>();
-            if (cache.TryGetValue(key, out var existingEntity))
-            {
-                return (CafeEmployeeBll)existingEntity;
-            }
-
-            var returnValue = new CafeEmployeeBll
+            var mappingCacheHelper = new MappingCacheHelper<CafeEmployee, CafeEmployeeBll>(
+                $"{cafeEmployee.CafeEmployeeId}", ref cache);
+            Func<CafeEmployeeBll> mapFunction = () => new CafeEmployeeBll
             {
                 CafeEmployeeId = cafeEmployee.CafeEmployeeId,
                 CafeGuid = cafeEmployee.CafeGuid,
@@ -69,8 +62,10 @@ namespace CafeManagementApp.BLL.Mapping
                 StartDate = cafeEmployee.StartDate,
                 EndDate = cafeEmployee.EndDate
             };
-
-            cache.Add(key, returnValue);
+            if (mappingCacheHelper.TryGetExistingEntityElseMap(mapFunction, out var returnValue))
+            {
+                return returnValue;
+            }
 
             if (mapEmployee)
             {

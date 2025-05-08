@@ -36,7 +36,7 @@ namespace CafeManagementApp.Server.Controllers
         {
             var result = await _cafeService.GetAllCafes(location);
             return result.ToCustomReturnedActionResult(x => 
-                x.Select(x => x.MapToViewModel()).OrderByDescending(x => x.Employees).ToList(), 
+                x.Select(x => x.MapToGetViewModel()).OrderByDescending(x => x.Employees).ToList(), 
                 this);
         }
 
@@ -55,5 +55,23 @@ namespace CafeManagementApp.Server.Controllers
                 x.Select(x => x.MapToViewModel()).OrderByDescending(x => x.DaysWorked).ToList(),
                 this);
         }
+
+        [HttpPost]
+        [Route("~/api/cafe")]
+        [ProducesResponseType(typeof(CafeViewModel), 200)]
+        public async Task<IActionResult> PostCreateCafe([FromBody] CafeViewModel cafeViewModel)
+        {
+            //TODO: check the code below works.
+            var cafe = cafeViewModel.MapToBll();
+            var result = await _cafeService.UpsertCafe(cafe);
+            return result.ToCustomReturnedActionResult(x => x.MapToViewModel(), this);
+        }
+
+        // Create a POST endpoint /employee
+        //This should create a new employee in the database.
+        //This should also create the relationship between an employee and a café.
+        //[HttpPost]
+        //[Route("~/api/employee")]
+        //[ProducesResponseType(typeof(EmployeeViewModel), 200)]
     }
 }

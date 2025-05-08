@@ -1,4 +1,5 @@
 ﻿using CafeManagementApp.BLL.Model;
+using CafeManagementApp.Shared;
 using CafeManagementApp.SQL.Model;
 
 namespace CafeManagementApp.BLL.Mapping
@@ -13,14 +14,9 @@ namespace CafeManagementApp.BLL.Mapping
                 return null;
             }
 
-            var key = $"{nameof(EmployeeBll)}_{employeeBll.EmployeeId}";
-            cache ??= new Dictionary<string, object>();
-            if (cache.TryGetValue(key, out var existingEntity))
-            {
-                return (Employee)existingEntity;
-            }
-
-            var returnValue = new Employee
+            var mappingCacheHelper = new MappingCacheHelper<EmployeeBll, Employee>(
+                $"{employeeBll.EmployeeId}", ref cache);
+            Func<Employee> mapFunction = () => new Employee
             {
                 EmployeeId = employeeBll.EmployeeId,
                 EmployeeIdString = employeeBll.EmployeeIdString,
@@ -29,8 +25,10 @@ namespace CafeManagementApp.BLL.Mapping
                 PhoneNumber = employeeBll.PhoneNumber,
                 Gender = employeeBll.Gender                
             };
-
-            cache.Add(key, returnValue);
+            if (mappingCacheHelper.TryGetExistingEntityElseMap(mapFunction, out var returnValue))
+            {
+                return returnValue;
+            }
 
             if (mapCafeEmployees)
             {
@@ -46,25 +44,21 @@ namespace CafeManagementApp.BLL.Mapping
             {
                 return null;
             }
-
-            var key = $"{nameof(Employee)}_{employee.EmployeeId}";
-            cache ??= new Dictionary<string, object>();
-            if (cache.TryGetValue(key, out var existingEntity))
-            {
-                return (EmployeeBll)existingEntity;
-            }
-
-            var returnValue = new EmployeeBll
+            var mappingCacheHelper = new MappingCacheHelper<Employee, EmployeeBll>(
+                $"{employee.EmployeeId}", ref cache);
+            Func<EmployeeBll> mapFunction = () => new EmployeeBll
             {
                 EmployeeId = employee.EmployeeId,
                 EmployeeIdString = employee.EmployeeIdString,
                 Name = employee.Name,
                 EmailAddress = employee.EmailAddress,
                 PhoneNumber = employee.PhoneNumber,
-                Gender = employee.Gender                
+                Gender = employee.Gender
             };
-
-            cache.Add(key, returnValue);
+            if (mappingCacheHelper.TryGetExistingEntityElseMap(mapFunction, out var returnValue))
+            {
+                return returnValue;
+            }
 
             if (mapCafeEmployees)
             {

@@ -1,4 +1,5 @@
 ﻿using CafeManagementApp.BLL.Model;
+using CafeManagementApp.Shared;
 using CafeManagementApp.SQL.Model;
 
 namespace CafeManagementApp.BLL.Mapping
@@ -13,27 +14,29 @@ namespace CafeManagementApp.BLL.Mapping
                 return null;
             }
 
-            var key = $"{nameof(CafeBll)}_{cafeBll.CafeGuid}";
-            cache ??= new Dictionary<string, object>();
-            if (cache.TryGetValue(key, out var existingEntity))
+            var mappingCacheHelper = new MappingCacheHelper<CafeBll, Cafe>($"{cafeBll.CafeGuid}", ref cache);
+            Func<Cafe> mapAction = () =>
             {
-                return (Cafe)existingEntity;
+                var mappedItem = new Cafe
+                {
+                    CafeGuid = cafeBll.CafeGuid,
+                    Name = cafeBll.Name,
+                    Description = cafeBll.Description,
+                    Logo = cafeBll.Logo,
+                    Location = cafeBll.Location,
+                };
+                return mappedItem;
+            };
+            if (mappingCacheHelper.TryGetExistingEntityElseMap(mapAction, out var returnValue))
+            {
+                return returnValue;
             }
 
-            var returnValue = new Cafe
-            {
-                CafeGuid = cafeBll.CafeGuid,
-                Name = cafeBll.Name,
-                Description = cafeBll.Description,
-                Logo = cafeBll.Logo,
-                Location = cafeBll.Location,
-            };
-
-            cache.Add(key, returnValue);
-
+            //additional mappings
             if (mapCafeEmployees)
             {
-                returnValue.CafeEmployees = cafeBll.CafeEmployees.Select(x => x.MapToSql(mapEmployee: true, cache: cache)).ToList();
+                returnValue.CafeEmployees = cafeBll.CafeEmployees
+                    .Select(x => x.MapToSql(mapEmployee: true, cache: cache)).ToList();
             }
 
             return returnValue;
@@ -47,14 +50,8 @@ namespace CafeManagementApp.BLL.Mapping
                 return null;
             }
 
-            var key = $"{nameof(Cafe)}_{cafe.CafeGuid}";
-            cache ??= new Dictionary<string, object>();
-            if (cache.TryGetValue(key, out var existingEntity))
-            {
-                return (CafeBll)existingEntity;
-            }
-
-            var returnValue = new CafeBll
+            var mappingCacheHelper = new MappingCacheHelper<Cafe, CafeBll>($"{cafe.CafeGuid}", ref cache);
+            Func<CafeBll> mapFunction = () => new CafeBll
             {
                 CafeGuid = cafe.CafeGuid,
                 Name = cafe.Name,
@@ -62,8 +59,10 @@ namespace CafeManagementApp.BLL.Mapping
                 Logo = cafe.Logo,
                 Location = cafe.Location,
             };
-
-            cache.Add(key, returnValue);
+            if (mappingCacheHelper.TryGetExistingEntityElseMap(mapFunction, out var returnValue))
+            {
+                return returnValue;
+            }
 
             if (mapCafeEmployees)
             {
