@@ -58,7 +58,7 @@ namespace CafeManagementApp.BLL.Service
                                 includes: includeModel)
                 : await _unitOfWork.CafeRepository.All(includes: includeModel);
 
-            return DomainResult.Success(cafes.Select(x => x.MapToBll(mapCafeEmployees: true)).ToList());
+            return DomainResult.Success(cafes.Select(x => x.MapToBll()).ToList());
         }
 
         public async Task<IDomainResult<CafeBll?>> GetCafeByGuid(Guid cafeGuid)
@@ -80,7 +80,7 @@ namespace CafeManagementApp.BLL.Service
                 return DomainResult.NotFound<CafeBll?>();
             }
 
-            return DomainResult.Success(cafes.MapToBll(mapCafeEmployees: true));
+            return DomainResult.Success(cafes.MapToBll());
         }
 
         public async Task<IDomainResult<CafeBll?>> UpsertCafe(CafeBll cafe)

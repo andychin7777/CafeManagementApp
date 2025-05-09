@@ -24,10 +24,15 @@ namespace CafeManagementApp.Server.Infrastructure.Filter
                         Errors = ms.Value.Errors.Select(e => e.ErrorMessage).ToList()
                     });
 
-                // Return DomainResult with validation errors
-                var domainResult = DomainResult.Failed(errors.SelectMany(x => x.Errors));
+                // Flatten the nested collections into a single list of strings
+                var flattenedErrors = errors
+                    .SelectMany(x => x.Errors.Select(y => $"{x.Field} - {y}"))
+                    .ToList();
 
-                //set the naming policy to null to default to default casing.
+                // Return DomainResult with validation errors
+                var domainResult = DomainResult.Failed(flattenedErrors);
+
+                // Set the naming policy to null to default to default casing.
                 var jsonOptions = new JsonSerializerOptions
                 {
                     PropertyNamingPolicy = null

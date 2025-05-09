@@ -6,9 +6,7 @@ namespace CafeManagementApp.BLL.Mapping
 {
     internal static class CafeEmployeeMapping
     {
-        internal static CafeEmployee? MapToSql(this CafeEmployeeBll cafeEmployeeBll, 
-            bool mapEmployee = false, 
-            bool mapCafe = false,
+        internal static CafeEmployee? MapToSql(this CafeEmployeeBll cafeEmployeeBll,            
             Dictionary<string, object>? cache = null)
         {
             if (cafeEmployeeBll == null)
@@ -31,20 +29,12 @@ namespace CafeManagementApp.BLL.Mapping
                 return returnValue;
             }
 
-            if (mapEmployee)
-            {
-                returnValue.Employee = cafeEmployeeBll.Employee?.MapToSql(mapCafeEmployees:true);
-            }
-            if (mapCafe)
-            {
-                returnValue.Cafe = cafeEmployeeBll.Cafe?.MapToSql(mapCafeEmployees: true);
-            }
+            returnValue.Employee = cafeEmployeeBll.Employee?.MapToSql();
+            returnValue.Cafe = cafeEmployeeBll.Cafe?.MapToSql();
             return returnValue;
         }
 
         internal static CafeEmployeeBll? MapToBll(this CafeEmployee cafeEmployee,
-            bool mapEmployee = false,
-            bool mapCafe = false,
             Dictionary<string, object>? cache = null)
         {
             if (cafeEmployee == null)
@@ -67,14 +57,8 @@ namespace CafeManagementApp.BLL.Mapping
                 return returnValue;
             }
 
-            if (mapEmployee)
-            {
-                returnValue.Employee = cafeEmployee.Employee?.MapToBll(mapCafeEmployees: true, cache: cache);
-            }
-            if (mapCafe)
-            {
-                returnValue.Cafe = cafeEmployee.Cafe?.MapToBll(mapCafeEmployees: true, cache: cache);
-            }
+            returnValue.Employee = cafeEmployee.Employee?.MapToBll(cache: cache);
+            returnValue.Cafe = cafeEmployee.Cafe?.MapToBll(cache: cache);
 
             return returnValue;
         }

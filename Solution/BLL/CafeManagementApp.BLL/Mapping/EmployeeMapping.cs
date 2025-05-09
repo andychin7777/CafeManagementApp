@@ -6,7 +6,7 @@ namespace CafeManagementApp.BLL.Mapping
 {
     internal static class EmployeeMapping
     {
-        internal static Employee? MapToSql(this EmployeeBll employeeBll, bool mapCafeEmployees = false,
+        internal static Employee? MapToSql(this EmployeeBll employeeBll,
             Dictionary<string, object>? cache = null)
         {
             if (employeeBll == null)
@@ -23,21 +23,19 @@ namespace CafeManagementApp.BLL.Mapping
                 Name = employeeBll.Name,
                 EmailAddress = employeeBll.EmailAddress,
                 PhoneNumber = employeeBll.PhoneNumber,
-                Gender = employeeBll.Gender                
+                Gender = employeeBll.Gender
             };
             if (mappingCacheHelper.TryGetExistingEntityElseMap(mapFunction, out var returnValue))
             {
                 return returnValue;
             }
 
-            if (mapCafeEmployees)
-            {
-                returnValue.CafeEmployees = employeeBll.CafeEmployees.Select(x => x.MapToSql(mapCafe: true, cache: cache)).ToList();
-            }
+            returnValue.CafeEmployees = employeeBll.CafeEmployees.Select(x => x.MapToSql(cache: cache)).ToList();
+            
             return returnValue;
         }
 
-        internal static EmployeeBll? MapToBll(this Employee employee, bool mapCafeEmployees = false,
+        internal static EmployeeBll? MapToBll(this Employee employee,
             Dictionary<string, object>? cache = null)
         {
             if (employee == null)
@@ -60,11 +58,8 @@ namespace CafeManagementApp.BLL.Mapping
                 return returnValue;
             }
 
-            if (mapCafeEmployees)
-            {
-                returnValue.CafeEmployees = employee.CafeEmployees.Select(x => x.MapToBll(mapCafe: true, cache: cache)).ToList();
-            }
-
+            returnValue.CafeEmployees = employee.CafeEmployees.Select(x => x.MapToBll(cache: cache)).ToList();
+            
             return returnValue;
         }
     }

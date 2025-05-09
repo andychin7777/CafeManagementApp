@@ -1,10 +1,8 @@
 ﻿using CafeManagementApp.BLL.Interface;
-using CafeManagementApp.BLL.Model;
 using CafeManagementApp.Server.Helper;
 using CafeManagementApp.Server.Mapping;
 using CafeManagementApp.Server.Model;
 using DomainResults.Common;
-using DomainResults.Mvc;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CafeManagementApp.Server.Controllers
@@ -16,12 +14,10 @@ namespace CafeManagementApp.Server.Controllers
     public class CafeController : ControllerBase
     {
         private readonly ICafeService _cafeService;
-        private readonly IEmployeeService _employeeService;
 
         public CafeController(ICafeService cafeService, IEmployeeService employeeService)
         {
             _cafeService = cafeService;
-            _employeeService = employeeService;
         }
 
         /// <summary>
@@ -30,48 +26,58 @@ namespace CafeManagementApp.Server.Controllers
         /// <param name="location">The location to filter cafes by (leave blank to ignore).</param>
         /// <returns>A list of cafes in the specified location ordered by highest number of employees first.</returns>
         [HttpGet]
-        [Route("~/api/cafes")]
+        [Route("~/api/Cafes")]
         [ProducesResponseType(typeof(List<GetCafeViewModel>), 200)]
         public async Task<IActionResult> GetCafesByLocation([FromQuery] string? location)
         {
             var result = await _cafeService.GetAllCafes(location);
-            return result.ToCustomReturnedActionResult(x => 
-                x.Select(x => x.MapToGetViewModel()).OrderByDescending(x => x.Employees).ToList(), 
-                this);
-        }
-
-        /// <summary>
-        /// Retrieves a list of employees filtered by cafe
-        /// </summary>
-        /// <param name="cafe">The cafe to filter employees by (leave blank to ignore).</param>
-        /// <returns>A list of employees in the specified cafe ordered by highest number of days worked first.</returns>
-        [HttpGet]
-        [Route("~/api/employees")]
-        [ProducesResponseType(typeof(List<GetEmployeeViewModel>), 200)]
-        public async Task<IActionResult> GetEmployeeByCafe([FromQuery] string? cafe)
-        {
-            var result = await _employeeService.GetAllEmployees(cafe);
             return result.ToCustomReturnedActionResult(x =>
-                x.Select(x => x.MapToViewModel()).OrderByDescending(x => x.DaysWorked).ToList(),
+                x.Select(x => x.MapToGetViewModel()).OrderByDescending(x => x.Employees).ToList(),
                 this);
         }
 
         [HttpPost]
-        [Route("~/api/cafe")]
         [ProducesResponseType(typeof(CafeViewModel), 200)]
         public async Task<IActionResult> PostCreateCafe([FromBody] CafeViewModel cafeViewModel)
         {
-            //TODO: check the code below works.
-            var cafe = cafeViewModel.MapToBll();
-            var result = await _cafeService.UpsertCafe(cafe);
+            //validate the cafeViewModel guid value needs to be empty
+            if (cafeViewModel.CafeGuid != Guid.Empty)
+            {
+                return DomainResult.Failed($"{nameof(cafeViewModel.CafeGuid)} needs to be empty to create")
+                    .ToCustomReturnedActionResult(this);
+            }
+
+            var result = await _cafeService.UpsertCafe(cafeViewModel.MapToBll());
             return result.ToCustomReturnedActionResult(x => x.MapToViewModel(), this);
         }
 
-        // Create a POST endpoint /employee
-        //This should create a new employee in the database.
-        //This should also create the relationship between an employee and a café.
-        //[HttpPost]
-        //[Route("~/api/employee")]
-        //[ProducesResponseType(typeof(EmployeeViewModel), 200)]
+        [HttpPut]
+        [ProducesResponseType(typeof(CafeViewModel), 200)]
+        public async Task<IActionResult> PutUpdateCafe([FromBody] CafeViewModel cafeViewModel)
+        {
+            //validate the update guid value needs to be not empty
+            if (cafeViewModel.CafeGuid == Guid.Empty)
+            {
+                return DomainResult.Failed($"{nameof(cafeViewModel.CafeGuid)} needs to be not empty to update")
+                    .ToCustomReturnedActionResult(this);
+            }
+
+            var result = await _cafeService.UpsertCafe(cafeViewModel.MapToBll());
+            return result.ToCustomReturnedActionResult(x => x.MapToViewModel(), this);
+        }
+
+        [HttpDelete]
+        [ProducesResponseType(typeof(DomainResult), 200)]
+        public async Task<IActionResult> DeleteCafe([FromQuery] Guid cafeGuid)
+        {
+            //validate the cafeGuid value needs to be not empty
+            if (cafeGuid == Guid.Empty)
+            {
+                return DomainResult.Failed($"{nameof(cafeGuid)} needs to be not empty to delete")
+                    .ToCustomReturnedActionResult(this);
+            }
+            var result = await _cafeService.DeleteCafe(cafeGuid);
+            return result.ToCustomReturnedActionResult(this);
+        }
     }
 }

@@ -41,7 +41,7 @@ namespace CafeManagementApp.BLL.Service
                                 includes: includeModel)
                 : await _unitOfWork.EmployeeRepository.All(includes: includeModel);
 
-            return DomainResult.Success(employees.Select(x => x.MapToBll(mapCafeEmployees: true)).ToList());
+            return DomainResult.Success(employees.Select(x => x.MapToBll()).ToList());
         }
 
         public async Task<IDomainResult<EmployeeBll?>> GetEmployeeByEmployeeId(long employeeId)

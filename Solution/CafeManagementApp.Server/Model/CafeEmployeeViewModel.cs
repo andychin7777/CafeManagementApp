@@ -18,8 +18,8 @@ namespace CafeManagementApp.Server.Model
 
 
         // Navigation properties
-        public CafeViewModel Cafe { get; set; }
+        public CafeViewModel? Cafe { get; set; }
 
-        public EmployeeViewModel Employee { get; set; }
+        public EmployeeViewModel? Employee { get; set; }
     }
 }

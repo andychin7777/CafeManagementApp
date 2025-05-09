@@ -6,7 +6,7 @@ namespace CafeManagementApp.BLL.Mapping
 {
     internal static class CafeMapping
     {
-        internal static Cafe? MapToSql(this CafeBll cafeBll, bool mapCafeEmployees = false, 
+        internal static Cafe? MapToSql(this CafeBll cafeBll,
             Dictionary<string, object>? cache = null)
         {
             if (cafeBll == null)
@@ -33,17 +33,14 @@ namespace CafeManagementApp.BLL.Mapping
             }
 
             //additional mappings
-            if (mapCafeEmployees)
-            {
-                returnValue.CafeEmployees = cafeBll.CafeEmployees
-                    .Select(x => x.MapToSql(mapEmployee: true, cache: cache)).ToList();
-            }
+            
+            returnValue.CafeEmployees = cafeBll.CafeEmployees
+                .Select(x => x.MapToSql(cache: cache)).ToList();
 
             return returnValue;
         }
 
-        internal static CafeBll? MapToBll(this Cafe cafe, bool mapCafeEmployees = false, 
-            Dictionary<string, object>? cache = null)
+        internal static CafeBll? MapToBll(this Cafe cafe, Dictionary<string, object>? cache = null)
         {
             if (cafe == null)
             {
@@ -64,11 +61,8 @@ namespace CafeManagementApp.BLL.Mapping
                 return returnValue;
             }
 
-            if (mapCafeEmployees)
-            {
-                returnValue.CafeEmployees = cafe.CafeEmployees.Select(x => x.MapToBll(mapEmployee: true, cache: cache)).ToList();
-            }
-
+            returnValue.CafeEmployees = cafe.CafeEmployees.Select(x => x.MapToBll(cache: cache)).ToList();
+            
             return returnValue;
         }
     }

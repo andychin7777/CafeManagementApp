@@ -5,7 +5,7 @@ namespace CafeManagementApp.Server.Mapping
 {
     internal static class GetEmployeeViewModelMapping
     {
-        internal static GetEmployeeViewModel? MapToViewModel(this EmployeeBll cafeBll)
+        internal static GetEmployeeViewModel? MapToGetViewModel(this EmployeeBll cafeBll)
         {
             if (cafeBll == null)
             {
@@ -37,7 +37,7 @@ namespace CafeManagementApp.Server.Mapping
             }
             
             returnValue.DaysWorked = currentDateOnly.DayNumber - currentCafeEmployeeRecord.StartDate!.Value.DayNumber;
-            returnValue.Cafe = currentCafeEmployeeRecord.Cafe.Name;
+            returnValue.Cafe = currentCafeEmployeeRecord?.Cafe?.Name;
 
             return returnValue;
         }

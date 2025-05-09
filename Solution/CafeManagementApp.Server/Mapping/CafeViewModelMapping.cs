@@ -1,5 +1,6 @@
 ﻿using CafeManagementApp.BLL.Model;
 using CafeManagementApp.Server.Model;
+using CafeManagementApp.Shared;
 
 namespace CafeManagementApp.Server.Mapping
 {
@@ -12,9 +13,8 @@ namespace CafeManagementApp.Server.Mapping
             {
                 return null;
             }
-
-            //TODO: add the missing mapping cache helper
-            return new CafeBll
+            var mappingCacheHelper = new MappingCacheHelper<CafeViewModel, CafeBll>($"{cafeViewModel.CafeGuid}", ref cache);
+            Func<CafeBll> mapFunction = () => new CafeBll
             {
                 CafeGuid = cafeViewModel.CafeGuid,
                 Name = cafeViewModel.Name!,
@@ -22,17 +22,25 @@ namespace CafeManagementApp.Server.Mapping
                 Logo = cafeViewModel.Logo,
                 Location = cafeViewModel.Location!,
             };
+
+            if (mappingCacheHelper.TryGetExistingEntityElseMap(mapFunction, out var cafeBll))
+            {
+                return cafeBll;
+            }
+
+            return cafeBll;
         }
 
-        internal static CafeViewModel? MapToViewModel(this CafeBll cafeBll)
+        internal static CafeViewModel? MapToViewModel(this CafeBll cafeBll,
+            Dictionary<string, object> cache = null)
         {
             if (cafeBll == null)
             {
                 return null;
             }
 
-            //TODO: add the missing mapping cache helper
-            return new CafeViewModel
+            var mappingCacheHelper = new MappingCacheHelper<CafeBll, CafeViewModel>($"{cafeBll.CafeGuid}", ref cache);
+            Func<CafeViewModel> mapFunction = () => new CafeViewModel
             {
                 CafeGuid = cafeBll.CafeGuid,
                 Name = cafeBll.Name,
@@ -40,6 +48,11 @@ namespace CafeManagementApp.Server.Mapping
                 Logo = cafeBll.Logo,
                 Location = cafeBll.Location,
             };
+            if (mappingCacheHelper.TryGetExistingEntityElseMap(mapFunction, out var cafeViewModel))
+            {
+                return cafeViewModel;
+            }
+            return cafeViewModel;
         }
     }
 }
